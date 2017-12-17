@@ -19,6 +19,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -62,7 +63,11 @@ public class ApiPhotoController {
         dbArticle.addPhoto(dbPhoto);
         localsArticleRepository.save(dbArticle);
 
-        fileUploadService.fileUpload(uploadFile, dbPhoto.getPhotoId());
+        try {
+            fileUploadService.fileUpload(uploadFile, dbPhoto.getPhotoId());
+        } catch (MultipartException e) {
+            throw new BadRequestException("Inappropriate file uploaded. check if its size exceeds 10MB.");
+        }
 
         return new ResponseEntity<Photo>(
                 dbPhoto,
