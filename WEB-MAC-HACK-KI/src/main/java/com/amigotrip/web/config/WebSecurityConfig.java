@@ -29,12 +29,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
 
         http
+                .antMatcher("/**")
+                .authorizeRequests()
+                    .antMatchers("/", "/login**", "/webjars/**")
+                    .permitAll()
+                .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/");
     }
-
-
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
