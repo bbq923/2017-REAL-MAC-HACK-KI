@@ -14,7 +14,6 @@ import java.security.Principal;
 @SpringBootApplication
 @EnableAsync
 @EnableJpaAuditing
-@EnableOAuth2Sso
 @EntityScan(basePackageClasses = {Jsr310JpaConverters.class},  // basePackageClasses에 지정
 		basePackages = {"com.amigotrip.domain"})
 public class MachackkiApplication {

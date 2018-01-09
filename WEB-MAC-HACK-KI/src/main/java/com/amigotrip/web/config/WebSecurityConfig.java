@@ -1,6 +1,7 @@
 package com.amigotrip.web.config;
 
 import com.amigotrip.service.CustomUserDetailsService;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import javax.annotation.Resource;
  */
 @Configuration
 @EnableWebSecurity
+@EnableOAuth2Sso
 @ComponentScan("com.amigotrip.service")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
@@ -31,12 +33,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/**")
                 .authorizeRequests()
-                    .antMatchers("/", "/login**", "/webjars/**")
+                    .antMatchers("/", "/test", "/login**", "/webjars/**")
                     .permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/");
+                    .logoutSuccessUrl("/test"); // for facebook social login test only
     }
 
     @Bean
